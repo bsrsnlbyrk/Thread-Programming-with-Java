@@ -8,6 +8,7 @@ public class MultiEchoServer {
 	
 	public static void main(String[] args) {
 		
+		//opening the port on the server
 		try {
 			serverSocket=new ServerSocket(PORT);
 			System.out.println("Port opened.");
@@ -19,11 +20,12 @@ public class MultiEchoServer {
 		}
 		do {
 			try{
+				//accepting a client request
 				Socket client=serverSocket.accept();
 				System.out.println("New client connection request is accepted.");
 				
 				ClientHandler handler=new ClientHandler(client);
-				handler.start();
+				handler.start(); //starts run() method that executes the thread
 			}
 			catch(Exception ex) {
 				System.out.println(ex.getMessage());
@@ -45,6 +47,7 @@ class ClientHandler extends Thread{
 		client=socket;
 		
 		try {
+			//getting input and output streams from the client
 			input=new Scanner(client.getInputStream());
 			output=new PrintWriter(client.getOutputStream(),true);
 		}
@@ -53,11 +56,12 @@ class ClientHandler extends Thread{
 		}
 	
 	}
-	
+	//overriding run() method in Thread class
 	public void run() {
 		String received;
 		
 		do {
+			//getting input stream from the client and sending as output to the client
 			received=input.nextLine();
 			output.println("ECHO:"+received);
 		}while(!received.equals("exit"));
